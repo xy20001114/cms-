@@ -8,9 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.xueyong.maven.dao.ArticleMapper;
-import com.xueyong.maven.pojo.Article;
-import com.xueyong.maven.pojo.User;
+import com.xueyong.cms.dao.ArticleMapper;
+import com.xueyong.cms.pojo.Article;
+
+
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:spring-beans.xml")
@@ -23,6 +24,5 @@ public class ArticleTest {
 	public void show() {
 		List<Article> select = articleMapper.select();
 		System.out.println(select);
-
 	}
 }
