@@ -62,15 +62,7 @@ public class Channel {
 		this.sorted = sorted;
 	}
 
-	@Override
-	public String toString() {
-		return "Channel [id=" + id + ", name=" + name + ", description=" + description + ", icon=" + icon + ", sorted="
-				+ sorted + "]";
-	}
 
-	public Channel() {
-		super();
-	}
 
 	
 }

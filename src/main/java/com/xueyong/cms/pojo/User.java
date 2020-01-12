@@ -4,6 +4,9 @@ import java.util.Date;
 
 public class User {
 
+	//扩展属性第二次验证密码
+	
+	private String rePassword;
 	/**  **/
 	private Integer id;
 	/** 登录名称 **/
@@ -27,9 +30,17 @@ public class User {
 	/** 个人博客网址 **/
 	private String url;
 	/** 创建时间 **/
-	private String create_time;
+	private Date create_time;
 	/** 修改时间 **/
-	private String update_time;
+	private Date update_time;
+	
+	
+	public String getRePassword() {
+		return rePassword;
+	}
+	public void setRePassword(String rePassword) {
+		this.rePassword = rePassword;
+	}
 	public Integer getId() {
 		return id;
 	}
@@ -96,29 +107,24 @@ public class User {
 	public void setUrl(String url) {
 		this.url = url;
 	}
-	public String getCreate_time() {
+	public Date getCreate_time() {
 		return create_time;
 	}
-	public void setCreate_time(String create_time) {
+	public void setCreate_time(Date create_time) {
 		this.create_time = create_time;
 	}
-	public String getUpdate_time() {
+	public Date getUpdate_time() {
 		return update_time;
 	}
-	public void setUpdate_time(String update_time) {
+	public void setUpdate_time(Date update_time) {
 		this.update_time = update_time;
 	}
-	@Override
-	public String toString() {
-		return "User [id=" + id + ", username=" + username + ", headimg=" + headimg + ", password=" + password
-				+ ", nickname=" + nickname + ", birthday=" + birthday + ", gender=" + gender + ", locked=" + locked
-				+ ", score=" + score + ", role=" + role + ", url=" + url + ", create_time=" + create_time
-				+ ", update_time=" + update_time + "]";
-	}
-	public User(Integer id, String username, String headimg, String password, String nickname, Date birthday,
-			Integer gender, Integer locked, Integer score, String role, String url, String create_time,
-			String update_time) {
+	
+	public User(String rePassword, Integer id, String username, String headimg, String password, String nickname,
+			Date birthday, Integer gender, Integer locked, Integer score, String role, String url, Date create_time,
+			Date update_time) {
 		super();
+		this.rePassword = rePassword;
 		this.id = id;
 		this.username = username;
 		this.headimg = headimg;
@@ -132,6 +138,13 @@ public class User {
 		this.url = url;
 		this.create_time = create_time;
 		this.update_time = update_time;
+	}
+	@Override
+	public String toString() {
+		return "User [rePassword=" + rePassword + ", id=" + id + ", username=" + username + ", headimg=" + headimg
+				+ ", password=" + password + ", nickname=" + nickname + ", birthday=" + birthday + ", gender=" + gender
+				+ ", locked=" + locked + ", score=" + score + ", role=" + role + ", url=" + url + ", create_time="
+				+ create_time + ", update_time=" + update_time + "]";
 	}
 	public User() {
 		super();
