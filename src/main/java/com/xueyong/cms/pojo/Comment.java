@@ -11,20 +11,24 @@ public class Comment {
 	private String content;
 	/** 评论时间 **/
 	private String created;
+	
+	/** 用户姓名 **/
+	private String cname;
 
-	public Comment(Integer id, Integer articleId, Integer userId, String content, String created) {
+	public Comment(Integer id, Integer articleId, Integer userId, String content, String created, String cname) {
 		super();
 		this.id = id;
 		this.articleId = articleId;
 		this.userId = userId;
 		this.content = content;
 		this.created = created;
+		this.cname = cname;
 	}
 
 	@Override
 	public String toString() {
 		return "Comment [id=" + id + ", articleId=" + articleId + ", userId=" + userId + ", content=" + content
-				+ ", created=" + created + "]";
+				+ ", created=" + created + ", cname=" + cname + "]";
 	}
 
 	public Integer getId() {
@@ -65,6 +69,14 @@ public class Comment {
 
 	public void setCreated(String created) {
 		this.created = created;
+	}
+
+	public String getCname() {
+		return cname;
+	}
+
+	public void setCname(String cname) {
+		this.cname = cname;
 	}
 
 	public Comment() {

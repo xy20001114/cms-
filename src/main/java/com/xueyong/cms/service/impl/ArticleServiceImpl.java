@@ -166,4 +166,26 @@ public class ArticleServiceImpl implements ArticleService{
 		return articleMapper.select(article);
 	}
 
+	//查找相关文章
+	@Override
+	public List<Article> select(Integer id) {
+		//先查找里面频道id
+		Article article = articleMapper.selectById(id);
+		System.out.println(article);
+		return articleMapper.selects(id,article.getChannel_id());
+	}
+
+	/**
+	 * 查找最热文章
+	 */
+	@Override
+	public List<Article> getHotList(Integer pageSize) {
+		PageHelper.startPage(1, pageSize);
+		List<Article> list = articleMapper.gethotselect();
+		for (Article article : list) {
+			System.out.println("查找到的"+article);
+		}
+		return list;
+	}
+
 }

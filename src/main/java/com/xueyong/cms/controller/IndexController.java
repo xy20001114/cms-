@@ -2,19 +2,25 @@ package com.xueyong.cms.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.github.pagehelper.PageInfo;
+import com.xueyong.cms.common.CmsConst;
 import com.xueyong.cms.pojo.Article;
 import com.xueyong.cms.pojo.CateGory;
 import com.xueyong.cms.pojo.Channel;
+import com.xueyong.cms.pojo.Comment;
 import com.xueyong.cms.pojo.Slide;
 import com.xueyong.cms.pojo.User;
 import com.xueyong.cms.service.ArticleService;
+import com.xueyong.cms.service.CommentService;
 import com.xueyong.cms.service.SlideService;
 import com.xueyong.cms.service.UserService;
 
@@ -26,6 +32,8 @@ public class IndexController {
 	private SlideService slideService;
 	@Autowired
 	private UserService userService;
+	@Autowired
+	private CommentService commentService;
 	/**
 	 * @Title: index   
 	 * @Description: 首页   
@@ -54,10 +62,12 @@ public class IndexController {
 		List<Slide> slideList = slideService.getAll();
 		PageInfo<Article> pageInfo = articleService.getHotList(pageNum,4);
 		List<Article> newArticleList = articleService.getNewList(6);
+		List<Article> srticleList = articleService.getHotList(20);
 		model.addAttribute("channelList", channelList);
 		model.addAttribute("slideList", slideList);
 		model.addAttribute("pageInfo", pageInfo);
 		model.addAttribute("newArticleList", newArticleList);
+		model.addAttribute("ArticleList", srticleList);
 		return "index";
 	}
 	
@@ -80,12 +90,15 @@ public class IndexController {
 		List<CateGory> cateList = articleService.getCateListByChannelId(channelId);
 		Channel channel = articleService.getChannelByChannelId(channelId);
 		List<Article> newArticleList = articleService.getNewList(6);
+		//查最热文章
+		List<Article> srticleList = articleService.getHotList(20);
 		model.addAttribute("channelList", channelList);
 		model.addAttribute("cateList", cateList);
 		model.addAttribute("slideList", slideList);
 		model.addAttribute("pageInfo", pageInfo);
 		model.addAttribute("channel", channel);
 		model.addAttribute("newArticleList", newArticleList);
+		model.addAttribute("ArticleList", srticleList);
 		return "index";
 	}
 	/**
@@ -98,13 +111,26 @@ public class IndexController {
 	 * @throws
 	 */
 	@RequestMapping("/article/detail/{id}.html")
-	public String articleDetail(@PathVariable Integer id,Model model) {
+	public String articleDetail(@PathVariable Integer id,Model model,@RequestParam(defaultValue = "1")Integer page,@RequestParam(defaultValue = "3")Integer pageSize,HttpSession session) {
 		Article article = articleService.getById(id);
+		System.out.println("文章详情页："+article);
 		User user = userService.getById(article.getUser_id());
+		System.out.println("文章详情页："+user);
 		article.setNickname(user.getNickname());
 		model.addAttribute("article", article);
 		/** 设置文章点击量，若点击量大于20成为热点文章 **/
 		articleService.setHitsAndHot(id);
+		//查找相关文章
+		List<Article> newArticleList = articleService.select(id);
+		model.addAttribute("newArticleList", newArticleList);
+		model.addAttribute("article", article);
+		model.addAttribute("user", user);
+		model.addAttribute("id",id);
+		User us = (User) session.getAttribute(CmsConst.UserSessionKey);
+		model.addAttribute("us", us);
+		//进行添加评论
+		PageInfo<Comment> info = commentService.selectService(page,pageSize,id);
+		model.addAttribute("info", info);
 		return "article-detail";
 	}
 }

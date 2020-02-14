@@ -130,4 +130,16 @@ public interface ArticleService {
 	 * @throws
 	 */
 	List<Article> getNewList(Integer pageSize);
+	/**
+	 * 查找相关文章
+	 * @param id
+	 * @return
+	 */
+	List<Article> select(Integer id);
+	/**
+	 * 查找最热文章
+	 * @param i
+	 * @return
+	 */
+	List<Article> getHotList(Integer pageSize);
 }

@@ -28,6 +28,7 @@
 							<li class="nav-item"><a class="nav-link"  href="/${item.id }/0/1.html">${item.name }</a></li>
 						</c:if>
 					</c:forEach>
+					
 				</ul>
 
 			</div>
@@ -97,27 +98,17 @@
 						</c:forEach>
 					</ul>
 				</div>
+				<!-- 点击量大于20成为热点文章 -->
 				<div class="right">
-					<div>最热文章</div>
+					<div>热门推荐</div>
 					<ul class="list-unstyled">
-						<li class="media"><img
-							src="http://p1.pstatp.com/large/pgc-image/4ab237b9682f4c0286da5c5e6823dc87"
-							style="height: 72px; width: 72px;" class="mr-3" alt="...">
+						<c:forEach items="${ArticleList}" var="item">
+						<li class="media">
+							<a href="/article/detail/${item.id }.html"><img src="${item.picture }"	style="height: 72px; width: 72px;" class="mr-3" alt="..."></a>
 							<div class="media-body">
-								<h5 class="mt-0 mb-1">电子眼全面升级，新增5项功能！</h5>
+								<h5 class="mt-0 mb-1"><a href="/article/detail/${item.id }.html">${item.title }</a></h5>
 							</div></li>
-						<li class="media"><img
-							src="http://p1.pstatp.com/large/pgc-image/4ab237b9682f4c0286da5c5e6823dc87"
-							style="height: 72px; width: 72px;" class="mr-3" alt="...">
-							<div class="media-body">
-								<h5 class="mt-0 mb-1">电子眼全面升级，新增5项功能！</h5>
-							</div></li>
-						<li class="media"><img
-							src="http://p1.pstatp.com/large/pgc-image/4ab237b9682f4c0286da5c5e6823dc87"
-							style="height: 72px; width: 72px;" class="mr-3" alt="...">
-							<div class="media-body">
-								<h5 class="mt-0 mb-1">电子眼全面升级，新增5项功能！</h5>
-							</div></li>
+						</c:forEach>
 					</ul>
 				</div>
 			</div>
