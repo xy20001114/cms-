@@ -7,17 +7,22 @@
 		SELECT * FROM cms_collect
 
 	</select>
-	<select id="selectById" resultType="Collect" >
-	SELECT * FROM cms_collect WHERE id=#{id}
+	<select id="selectCellects" resultType="Collect" >
+	SELECT * FROM cms_collect WHERE user_id=#{id}
+
+
+	</select>
+	<select id="selectText" resultType="Collect" >
+	SELECT * FROM cms_collect WHERE text=#{text} and user_id=${integer}
 
 
 	</select>
 	<delete id="delete">
-		DELETE FROM cms_collect WHERE id in(${ids})
+		DELETE FROM cms_collect WHERE id=#{id}
 
 
 	</delete>
-	<insert id="insert">
+	<insert id="add">
 	INSERT INTO cms_collect(text,url,created,user_id)VALUES 
 (#{text},#{url},#{created},#{user_id})
 

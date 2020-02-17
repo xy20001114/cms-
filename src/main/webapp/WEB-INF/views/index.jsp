@@ -114,7 +114,18 @@
 			</div>
 
 		</div>
+	
 	</div>
+	<nav aria-label="breadcrumb">
+		<ol class="breadcrumb">
+		<li> 友情链接:</li>
+		
+		<c:forEach items="${LinkList}" var="s" >
+			<li> <a href="${s.url}" style="margin-left: 60px;" >${s.text}</a> </li>
+		</c:forEach>
+			
+		</ol>
+	</nav>
 	<script src="/public/js/jquery.min.1.12.4.js"></script>
 	<script src="/public/js/bootstrap.min.js"></script>
 	<script type="text/javascript">

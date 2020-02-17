@@ -2,6 +2,7 @@ package com.xueyong.cms.controller;
 
 import java.util.List;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,11 +17,15 @@ import com.xueyong.cms.common.CmsConst;
 import com.xueyong.cms.pojo.Article;
 import com.xueyong.cms.pojo.CateGory;
 import com.xueyong.cms.pojo.Channel;
+import com.xueyong.cms.pojo.Collect;
 import com.xueyong.cms.pojo.Comment;
+import com.xueyong.cms.pojo.Link;
 import com.xueyong.cms.pojo.Slide;
 import com.xueyong.cms.pojo.User;
 import com.xueyong.cms.service.ArticleService;
+import com.xueyong.cms.service.CollectService;
 import com.xueyong.cms.service.CommentService;
+import com.xueyong.cms.service.LinkService;
 import com.xueyong.cms.service.SlideService;
 import com.xueyong.cms.service.UserService;
 
@@ -34,6 +39,10 @@ public class IndexController {
 	private UserService userService;
 	@Autowired
 	private CommentService commentService;
+	@Resource
+	private CollectService collectService;
+	@Autowired
+	private LinkService linkService;
 	/**
 	 * @Title: index   
 	 * @Description: 首页   
@@ -63,11 +72,16 @@ public class IndexController {
 		PageInfo<Article> pageInfo = articleService.getHotList(pageNum,4);
 		List<Article> newArticleList = articleService.getNewList(6);
 		List<Article> srticleList = articleService.getHotList(20);
+		//添加友情链接
+		 List<Link> LinkList =  linkService.select();
+		 model.addAttribute("LinkList", LinkList);
 		model.addAttribute("channelList", channelList);
 		model.addAttribute("slideList", slideList);
 		model.addAttribute("pageInfo", pageInfo);
 		model.addAttribute("newArticleList", newArticleList);
 		model.addAttribute("ArticleList", srticleList);
+		
+		
 		return "index";
 	}
 	
@@ -118,6 +132,8 @@ public class IndexController {
 		System.out.println("文章详情页："+user);
 		article.setNickname(user.getNickname());
 		model.addAttribute("article", article);
+		//添加友情链接
+		 List<Link> LinkList =  linkService.select();
 		/** 设置文章点击量，若点击量大于20成为热点文章 **/
 		articleService.setHitsAndHot(id);
 		//查找相关文章
@@ -126,6 +142,7 @@ public class IndexController {
 		model.addAttribute("article", article);
 		model.addAttribute("user", user);
 		model.addAttribute("id",id);
+		model.addAttribute("LinkList", LinkList);
 		User us = (User) session.getAttribute(CmsConst.UserSessionKey);
 		model.addAttribute("us", us);
 		//进行添加评论

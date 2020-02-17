@@ -2,6 +2,7 @@ package com.xueyong.cms.controller;
 
 import java.util.List;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,12 +20,16 @@ import com.xueyong.cms.common.JsonResult;
 import com.xueyong.cms.pojo.Article;
 import com.xueyong.cms.pojo.CateGory;
 import com.xueyong.cms.pojo.Channel;
+import com.xueyong.cms.pojo.Collect;
 import com.xueyong.cms.pojo.User;
 import com.xueyong.cms.service.ArticleService;
+import com.xueyong.cms.service.CollectService;
 
 @Controller
 @RequestMapping("/article/")
 public class ArticleController {
+	@Resource
+	private CollectService collectService;
 	@Autowired
 	private ArticleService articleService;
 	
@@ -105,5 +110,15 @@ public class ArticleController {
 	public @ResponseBody JsonResult deleteByIds(String ids) {
 		articleService.deleteByIds(ids);
 		return JsonResult.sucess();
+	}
+	//查找收藏文件
+	@RequestMapping("/cellects")
+	public String cellectSelect(Model model,@RequestParam(defaultValue = "1")Integer page,@RequestParam(defaultValue = "4")Integer PageSize,HttpSession session) {
+		User user = (User) session.getAttribute(CmsConst.UserSessionKey);
+		PageInfo<Collect> info =  collectService.selectCellects(user.getId(),page,PageSize);
+		
+		model.addAttribute("info",info);
+		return "article/cellects";
+		
 	}
 }

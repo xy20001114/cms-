@@ -139,7 +139,16 @@ public class UserController {
 	public String article() {
 		return "user/article";
 	}
-	
+	/**
+	 * 
+	    * @Title: set
+	    * @Description: TODO(这里用一句话描述这个方法的作用)
+	    * @param @param session
+	    * @param @param model
+	    * @param @return    参数
+	    * @return String    返回类型
+	    * @throws
+	 */
 	@GetMapping("/set")
 	public String set(HttpSession session,Model model) {
 		User userInfo = (User)session.getAttribute(CmsConst.UserSessionKey);

@@ -12,30 +12,23 @@
 <body>
 
 	<div class="header">
-		<ul class="nav">
-			<li class="nav-item" style="margin-left: 12px;">
-				<a	class="navbar-brand" href="#"> 
-					<img src="https://v4.bootcss.com/docs/4.3/assets/brand/bootstrap-solid.svg"	width="30" height="30" alt="">
-				</a>
-			</li>
-			<li class="nav-item"><a class="nav-link active" href="/">首页</a>
-			</li>
-			<li class="nav-item"><a class="nav-link" href="#">个人中心</a></li>
-			<li class="nav-item"><a class="nav-link" href="#">登录</a></li>
-			<li class="nav-item"><a class="nav-link disabled" href="#"
-				tabindex="-1" aria-disabled="true">退出</a></li>
-		</ul>
+		<jsp:include page="./common/user/head-top.jsp"></jsp:include>
 	</div>
 	<div class="container-fluid" style="margin-top: 6px;">
 		<div class="row offset-1">
 			<div class="col-6">
 				<h1>${article.title }</h1>
-				<h3 style="color: #777;">${article.nickname }    发布时间：<fmt:formatDate value="${article.created }" pattern="yyyy-MM-dd日"/></h3>
-				<div>
+				<!-- 隐藏id值 -->
+				<form id="fsd">
+					<input type="hidden" value="${us.id}" name="user_id">
+					<input type="hidden" value="${article.title}" name="text">
+				</form>
+				<h3 style="color: #777;"> 发布时间：<fmt:formatDate value="${article.created }" pattern="yyyy-MM-dd日"/></h3>
 					<div class="article-content">
 						${article.content }
+							<input type="button" value="收藏" onclick="sc()" class="btn btn-primary" id="fdd" >
+						
 					</div>
-				</div>
 				<div class="container-fluid" style="margin-top: 20px">
 					<form id="fid">
 					<c:if test="${userInfo==null}">
@@ -77,6 +70,16 @@
 			</div>
 		</div>
 	</div>
+	<nav aria-label="breadcrumb">
+		<ol class="breadcrumb">
+		<li> 友情链接:</li>
+		
+		<c:forEach items="${LinkList}" var="s" >
+			<li> <a href="${s.url}" style="margin-left: 60px;" >${s.text}</a> </li>
+		</c:forEach>
+			
+		</ol>
+	</nav>
 	<script src="/public/js/jquery.min.1.12.4.js"></script>
 	<script src="/public/js/bootstrap.min.js"></script>
 
@@ -101,6 +104,29 @@
 		function goPage(page){
 			var id = '${id}';
 			location.href="/article/detail/"+id+".html?page="+page;
+		}
+		//进行收藏文章
+		function sc(){
+			//如果session里面没有值就是没有登录，进行登录页面
+			if(${userInfo==null}){
+				alert("您没有登录，即将进行登录页面")
+				location.href="user/login";
+			}
+			else{
+				//获取本路径的地址
+				var url = window.location.href;
+				var fsd =$("#fsd").serialize(); 
+				//type类型，路径，传值，成功回调函数
+				$.post('/collect/add?url='+url,fsd,function(msg){
+					if(msg>0){
+						alert("收藏成功");
+						$("#fdd").remove();
+					}else{
+						alert("您已经收藏了不能重复收藏");
+					}
+				})
+			}
+			
 		}
 	</script>
 </html>
